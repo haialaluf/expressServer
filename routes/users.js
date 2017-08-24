@@ -37,5 +37,15 @@ module.exports = {
     loginLocal: function (req, res) {
         res.json(req.user);
     },
+
+    whoAmI: function (req, res) {
+        res.json(req.user);
+    },
+
+    logout: function (req, res) {
+        req.logOut();
+        res.send(200);
+    },
+
 };
 
