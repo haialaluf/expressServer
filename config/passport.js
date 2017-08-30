@@ -3,6 +3,9 @@
  */
 // load all the things we need
 const LocalStrategy = require('passport-local').Strategy;
+const FacebookTokenStrategy = require('passport-facebook-token');
+const GoogleTokenStrategy = require('passport-google-token').Strategy;
+const Auth = require('./auth.js');
 
 // load up the user model
 const User = require('../schemas/user');
@@ -62,4 +65,62 @@ module.exports = (passport) => {
 
         }));
 
+
+    passport.use(new FacebookTokenStrategy({
+        clientID: Auth.facebook.clientID,
+        clientSecret: Auth.facebook.clientSecret,
+        }, function(accessToken, refreshToken, profile, done) {
+            User.findOne({ 'facebook.id': profile.id }, (err, user) => {
+                if (err) {
+                    return done(err)
+                } else if (user) {
+                    return done(null, user);
+                } else {
+                    let newUser = new User();
+                    newUser.facebook.id = profile.id;
+                    newUser.facebook.token = accessToken;
+                    newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
+                    newUser.facebook.email = profile.emails[0].value;
+                    newUser.save((err) => {
+                        if (err) {
+                            throw err;
+                        } else {
+                            return done(null, newUser);
+                        }
+                    })
+                }
+            });
+        }
+    ));
+
+    passport.use(new GoogleTokenStrategy({
+            clientID: Auth.google.clientID,
+            clientSecret: Auth.google.clientSecret
+        },
+        function(accessToken, refreshToken, profile, done) {
+            User.findOne({ 'google.id': profile.id }, function (err, user) {
+                if (err) {
+                    return done(err)
+                } else if (user) {
+                    return done(null, user);
+                } else {
+                    let newUser = new User();
+                    newUser.google.id = profile.id;
+                    newUser.google.token = accessToken;
+                    newUser.google.name = profile.name.givenName + ' ' + profile.name.familyName;
+                    newUser.google.email = profile.emails[0].value;
+                    newUser.save((err) => {
+                        if (err) {
+                            throw err;
+                        } else {
+                            return done(null, newUser);
+                        }
+                    })
+                }
+            });
+        }
+    ));
+
 };
+
+

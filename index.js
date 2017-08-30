@@ -16,14 +16,19 @@ app.get('/api/getItems', Items.getItems);
 app.post('/api/uploadImage', FileUpload.fileUpload);
 
 // process the login form
-app.post('/api/login', passport.authenticate('local-login'), Users.loginLocal);
+app.post('/api/auth/login', passport.authenticate('local-login'), Users.whoAmI);
 
 // process the signup form
-app.post('/api/register', Users.signupLocal);
+app.post('/api/auth/register', Users.signupLocal);
 
 // process the signup form
-app.post('/api/logout', Users.logout);
+app.post('/api/auth/logout', Users.logout);
 
-app.get('/api/whoAmI', Users.whoAmI);
+app.get('/api/auth/whoAmI', Users.whoAmI);
+
+app.get('/api/auth/facebook', passport.authenticate('facebook-token'), Users.whoAmI);
+
+app.get('/api/auth/google', passport.authenticate('google-token'), Users.whoAmI);
 
 app.listen(1818);
+href="/gift-card/";

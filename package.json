@@ -23,6 +23,8 @@
     "mongoose": "^4.9.6",
     "node-uuid": "^1.4.8",
     "passport": "^0.3.2",
+    "passport-facebook-token": "^3.3.0",
+    "passport-google-token": "^0.1.2",
     "passport-http": "*",
     "passport-local": "*"
   }

@@ -34,12 +34,12 @@ module.exports = {
             });
     },
 
-    loginLocal: function (req, res) {
-        res.json(req.user);
-    },
-
     whoAmI: function (req, res) {
-        res.json(req.user);
+        if (req.isAuthenticated()) {
+            res.json(req.user);
+        } else {
+            res.status(403).send('No User');
+        }
     },
 
     logout: function (req, res) {
