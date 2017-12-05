@@ -1,0 +1,6 @@
+applications:
+- name:      server-tamplate
+  host:      server-tamplate
+  memory:    128M
+  services:
+  - MyMongo

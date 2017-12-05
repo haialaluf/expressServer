@@ -6,7 +6,9 @@ const mongoose = require('mongoose');
 const item = mongoose.model('item', new mongoose.Schema({
     name: String,
     description: String,
-    imageUrl: String
+    imageUrl: String,
+    properties: [String],
+    pricing: String
 }));
 
 module.exports = item;

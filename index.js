@@ -1,9 +1,14 @@
+const Settings = require('./config/settings.js');
 const Users = require('./routes/users.js');
 const Items = require('./routes/items.js');
+const Applications = require('./routes/applications.js');
 const FileUpload = require('./routes/fileUpload.js');
 const app = require('./app');
 const passport = require('passport');
 const ensureAuthenticated = (req, res, next) => req.isAuthenticated() ? next() : res.send(401);
+const cfenv = require('cfenv');
+const appEnvOpts = {};
+const appEnv = cfenv.getAppEnv(appEnvOpts);
 
 app.post('/api/addItem', ensureAuthenticated, Items.addItem);
 
@@ -30,5 +35,14 @@ app.get('/api/auth/facebook', passport.authenticate('facebook-token'), Users.who
 
 app.get('/api/auth/google', passport.authenticate('google-token'), Users.whoAmI);
 
-app.listen(1818);
-href="/gift-card/";
+// process the application form
+app.post('/api/contactMessage', Applications.makeApplication);
+
+if (Settings.env === 'prod') {
+    app.listen(appEnv.port, "0.0.0.0", function () {
+        // print a message when the server starts listening
+        console.log("server starting on " + appEnv.url);
+    });
+} else {
+    app.listen(8080)
+}
