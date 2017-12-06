@@ -19,5 +19,5 @@ module.exports = {
                     return res.json({imageUrl: fileUrl})
             });
         }
-    },
+    }
 };

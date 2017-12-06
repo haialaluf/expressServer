@@ -5,7 +5,7 @@ const Item = require('../schemas/item.js');
 
 module.exports = {
     addItem: (req, res) => {
-        Item.create({name: req.body.name, description: req.body.description, imageUrl: req.body.imageUrl}).then(
+        Item.create({name: req.body.name, description: req.body.description, imageUrl: req.body.imageUrl, properties: req.body.properties}).then(
             (dbRes) => res.json({id: dbRes._id}),
             (err) => res.status(411).send(err));
     },
