@@ -5,8 +5,19 @@ const Item = require('../schemas/item.js');
 
 module.exports = {
     addItem: (req, res) => {
-        Item.create({name: req.body.name, description: req.body.description, imageUrl: req.body.imageUrl, properties: req.body.properties}).then(
-            (dbRes) => res.json({id: dbRes._id}),
+        let item = {
+            name: req.body.name,
+            description: req.body.description,
+            shortDescription: req.body.shortDescription,
+            filesUrl: req.body.fileList,
+            videoUrl: req.body.videoUrl,
+            type: parseInt(req.body.itemType),
+            properties: req.body.properties
+        };
+        Item.create(item).then(
+            (dbRes) => {
+                res.json({id: dbRes._id})
+            },
             (err) => res.status(411).send(err));
     },
 
@@ -24,8 +35,16 @@ module.exports = {
     },
 
     getItems: (req, res) => {
-        Item.find().then(
-            (dbRes) => res.json(dbRes),
-            (err) => res.status(411).send(err));
+        let queryPrams = req.query;
+        if (queryPrams.type) {
+            queryPrams.type = parseInt(queryPrams.type);
+        }
+        Item.find(queryPrams).then(
+            (dbRes) => {
+                res.json(dbRes)
+            },
+            (err) => {
+                res.status(411).send(err)
+            });
     }
 };

@@ -22,6 +22,7 @@
     "express-session": "*",
     "mongodb": "*",
     "mongoose": "^4.9.6",
+    "multer": "^1.3.0",
     "node-uuid": "^1.4.8",
     "nodemailer": "^4.4.0",
     "passport": "^0.3.2",

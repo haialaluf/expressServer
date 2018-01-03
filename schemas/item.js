@@ -5,10 +5,13 @@ const mongoose = require('mongoose');
 
 const item = mongoose.model('item', new mongoose.Schema({
     name: String,
+    shortDescription: String,
     description: String,
-    imageUrl: String,
+    videoUrl: String,
+    filesUrl: [String],
     properties: [String],
-    pricing: String
+    pricing: String,
+    type: Number
 }));
 
 module.exports = item;
