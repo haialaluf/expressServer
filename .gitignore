@@ -1,17 +1,11 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.idea
-/public/images
-
-# testing
-/coverage
-
-# production
-/build
+node_modules/
+public/images/
 
 # misc
+.idea
 .DS_Store
 .env.local
 .env.development.local

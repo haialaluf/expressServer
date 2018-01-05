@@ -4,6 +4,8 @@
 const mongoose = require('mongoose');
 
 const order = mongoose.model('order', new mongoose.Schema({
+    created: { type: Date, default: Date.now },
+    status: { type: Number, default: 1 },
     name: String,
     email: String,
     date: String,
