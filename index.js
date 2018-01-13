@@ -67,7 +67,7 @@ app.post('/api/uploadFiles', FileUpload.fileUpload);
 app.get('/api/hello', (req, res) => res.json('Hello!'));
 
 
-if (Settings.env === 'prod1') {
+if (Settings.env === 'prod') {
     app.listen(appEnv.port, "0.0.0.0", function () {
         // print a message when the server starts listening
         console.log("server starting on " + appEnv.url);
