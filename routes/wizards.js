@@ -10,7 +10,7 @@ module.exports = {
             stages: req.body.stages,
             items: req.body.items
         };
-        Wizard.create(wizard).then(
+        Wizard.createWizard(wizard).then(
             (dbRes) => {
                 res.json({id: dbRes._id})
             },
@@ -18,7 +18,7 @@ module.exports = {
     },
 
     getWizardById: (req, res) => {
-        Wizard.findById(req.query.id).then(
+        Wizard.findById(req.query.id).populate('items').then(
             (dbRes) => res.json(dbRes),
             (err) => res.status(411).send(err));
     },
@@ -34,7 +34,7 @@ module.exports = {
 
     getWizard: (req, res) => {
         let queryPrams = req.query;
-        Wizard.find(queryPrams).then(
+        Wizard.find(queryPrams).populate('items').then(
             (dbRes) => {
                 res.json(dbRes)
             },

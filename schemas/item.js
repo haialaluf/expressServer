@@ -9,7 +9,7 @@ const item = mongoose.model('item', new mongoose.Schema({
     description: String,
     videoUrl: String,
     filesUrl: [String],
-    properties: [String],
+    tags: [String],
     pricing: String,
     type: Number
 }));

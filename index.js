@@ -1,5 +1,6 @@
 const Settings = require('./config/settings.js');
 const Users = require('./routes/users.js');
+const websiteSettings = require('./routes/websiteSettings.js');
 const Items = require('./routes/items.js');
 const Wizard = require('./routes/wizards.js');
 const Order = require('./routes/orders.js');
@@ -31,6 +32,12 @@ app.get('/api/auth/facebook', passport.authenticate('facebook-token'), Users.who
 app.get('/api/auth/google', passport.authenticate('google-token'), Users.whoAmI);
 
 
+//Website settings
+app.put('/api/settings'/*, ensureAuthenticated*/, websiteSettings.putSettings);
+
+app.get('/api/settings', websiteSettings.getSettings);
+
+
 //Items:
 app.post('/api/addItem', ensureAuthenticated, Items.addItem);
 
@@ -42,13 +49,13 @@ app.get('/api/getItems', Items.getItems);
 
 
 //Wizards:
-app.post('/api/createWizard', ensureAuthenticated, Wizard.createWizard);
+app.post('/api/createWizard'/*, ensureAuthenticated*/, Wizard.createWizard);
 
 app.delete('/api/deleteWizard', ensureAuthenticated, Wizard.deleteWizard);
 
 app.get('/api/getWizardById', Wizard.getWizardById);
 
-app.get('/api/getWizards', ensureAuthenticated, Wizard.getWizard);
+app.get('/api/getWizards'/*, ensureAuthenticated*/, Wizard.getWizard);
 
 
 //Orders
@@ -63,8 +70,7 @@ app.get('/api/order', ensureAuthenticated,  Order.getOrders);
 app.post('/api/uploadFiles', FileUpload.fileUpload);
 
 
-
-app.get('/api/hello', (req, res) => res.json('Hello!'));
+app.get('/api/test', (req, res) => res.json('Hello :)'));
 
 
 if (Settings.env === 'prod') {

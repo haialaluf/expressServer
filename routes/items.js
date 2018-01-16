@@ -12,7 +12,7 @@ module.exports = {
             filesUrl: req.body.fileList,
             videoUrl: req.body.videoUrl,
             type: parseInt(req.body.itemType),
-            properties: req.body.properties
+            tags: req.body.tags
         };
         Item.create(item).then(
             (dbRes) => {

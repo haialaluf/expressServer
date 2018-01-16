@@ -34,6 +34,7 @@ module.exports = {
             });
     },
 
+
     whoAmI: function (req, res) {
         if (req.isAuthenticated()) {
             res.json(req.user);

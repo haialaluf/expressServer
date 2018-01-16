@@ -1,6 +1,7 @@
 /*
  * Created by hai on 21/05/2017.
  */
+const Settings = require('./config/settings.js');
 const mongoose = require('mongoose');
 const express = require('express');
 const session = require('express-session');
@@ -12,28 +13,19 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 
 
-// Set environment
-app.env = 'dev';
-
 // Body Parser
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json(    ));
+app.use(bodyParser.json({limit: '50mb'}));
 
-if (app.env === 'prod') {
-    mongoose.connect('mongodb://admin:WKJSUDCDNSAYFBXQ@sl-us-south-1-portal.17.dblayer.com:28522,sl-us-south-1-portal.12.dblayer.com:28522/compose?authSource=admin&ssl=true', {
-            useMongoClient: true
-        });
-} else {
-    mongoose.connect('mongodb://localhost/', {
+//MongoDb connection
+mongoose.connect(Settings.dbUrl, {
         useMongoClient: true
-    })
-}
+    });
 mongoose.Promise = global.Promise;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(ans) {
     console.log('MongoDb is Connected!');
 });
-
 
 // Express Session
 app.use(session({
@@ -51,7 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Cors Allow Origin
-app.use(cors({origin: 'http://localhost:3000', credentials: true}));
+app.use(cors({origin: Settings.webSiteOrigen, credentials: true}));
 
 app.use('/public', express.static('public'));
 
