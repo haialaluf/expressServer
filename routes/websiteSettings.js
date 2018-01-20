@@ -5,6 +5,7 @@
  * Created by haialaluf on 04/01/2018.
  */
 const Settings = require('../schemas/settings.js');
+const AppSettings = require('../config/settings.js');
 
 module.exports = {
     
@@ -31,7 +32,16 @@ module.exports = {
         Settings.find().then(
             (dbRes) => {
                 let settings = dbRes[0] || {};
-                res.json(settings)
+                if (req.isAuthenticated()) {
+                    res.json({
+                        settings: settings,
+                        storage: AppSettings.storage
+                    })
+                } else {
+                    res.json({
+                        settings: settings
+                    })
+                }
             },
             (err) => {
                 res.status(411).send(err)
