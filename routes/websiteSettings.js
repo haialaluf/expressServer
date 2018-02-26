@@ -7,6 +7,25 @@
 const Settings = require('../schemas/settings.js');
 const AppSettings = require('../config/settings.js');
 
+const generateRespnonceData = (settings, isAuthenticated) => {
+    if (isAuthenticated) {
+        return {
+            settings: settings,
+            storage: AppSettings.storage
+        }
+    } else {
+        return {
+            settings: settings,
+            storage: {
+                bucketName: AppSettings.storage.bucketName,
+                region: AppSettings.storage.region,
+                apiVersions: AppSettings.storage.apiVersions
+            }
+        }
+    }
+
+}
+
 module.exports = {
     
     putSettings: (req, res) => {
@@ -14,13 +33,19 @@ module.exports = {
             (dbRes) => {
                 if (dbRes.length) {
                     let settings = dbRes[0];
-                    settings.activeWizard = req.body.activeWizard;
-                    settings.save((dbRes) => res.json(settings))
+                    if (req.body.activeWizard) {
+                        settings.activeWizard = req.body.activeWizard;
+                    }
+                    if (req.body.homeView) {
+                        settings.homeView = req.body.homeView;
+                    }
+                    settings.save((dbRes) => res.json(generateRespnonceData(settings, req.isAuthenticated()))                )
                 } else {
                     let settings = new Settings;
                     settings.activeWizard = req.body.activeWizard;
+                    settings.homeView = req.body.homeView;
                     Settings.create(settings).then(
-                        (dbRes) => res.json(settings)
+                        res.json(generateRespnonceData(settings, req.isAuthenticated()))
                     );
                 }
             },
@@ -32,19 +57,11 @@ module.exports = {
         Settings.find().then(
             (dbRes) => {
                 let settings = dbRes[0] || {};
-                if (req.isAuthenticated()) {
-                    res.json({
-                        settings: settings,
-                        storage: AppSettings.storage
-                    })
-                } else {
-                    res.json({
-                        settings: settings
-                    })
-                }
+                res.json(generateRespnonceData(settings, req.isAuthenticated()))
             },
             (err) => {
                 res.status(411).send(err)
             });
     }
+
 };
